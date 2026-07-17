@@ -162,8 +162,8 @@
             margin-bottom: 16px;
         }
 
-        /* --- Input e Textarea --- */
-        textarea, input[type="text"] {
+        /* --- Input, Data e Textarea --- */
+        textarea, input[type="text"], input[type="date"] {
             width: 100%;
             border: 1px solid #eee;
             background-color: #fafafa;
@@ -176,13 +176,20 @@
             transition: border-color 0.2s;
         }
 
-        textarea:focus, input[type="text"]:focus {
+        textarea:focus, input[type="text"]:focus, input[type="date"]:focus {
             border-color: var(--primary-red);
             background-color: #fff;
         }
 
         textarea {
             min-height: 90px;
+        }
+
+        /* Grid per attività e data affiancati */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         /* --- Bottoni delle schede --- */
@@ -218,6 +225,7 @@
         .icon-svg {
             width: 18px;
             height: 18px;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -242,7 +250,7 @@
         </div>
     </header>
 
-    <!-- Titolo di benvenuto con stile -->
+    <!-- Titolo di benvenuto -->
     <div class="title-section">
         <h2>Un posto per dirci "<span class="highlight">sono qui</span>", anche da lontano.</h2>
     </div>
@@ -261,25 +269,44 @@
         </button>
     </div>
 
-    <!-- Scheda 2: Messaggio Bisogno di Chiamata (Dinamico) -->
+    <!-- Scheda 2: Ho voglia di... (NUOVA) -->
+    <div class="card">
+        <span class="card-tag">Desideri</span>
+        <h3 id="voglia-titolo">Ho voglia di...</h3>
+        <p>Condividi una tua voglia improvvisa, una coccola o un vizio.</p>
+        
+        <input type="text" id="voglia-testo" placeholder="Esempio: un abbraccio forte, sushi, un massaggio...">
+        
+        <button class="action-btn btn-submit" style="background-color: #6c5ce7;" onclick="inviaVoglia()">
+            <span id="voglia-btn-testo">Condividi con Bibi</span>
+        </button>
+    </div>
+
+    <!-- Scheda 3: Messaggio Bisogno di Chiamata (Icona Corretta) -->
     <div class="card">
         <span class="card-tag">Sintonia</span>
         <h3>Ho voglia di sentirti</h3>
         <p>Invia un piccolo promemoria per farti squillare il telefono.</p>
         
         <button class="action-btn btn-message" onclick="inviaRichiestaChiamata()">
-            <svg class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.72.598.598 0 00.5.41l1.6 1.6a1 1 0 01.25 1.04l-.08.25A1.994 1.994 0 0111 8H5c-1.1 0-2-.9-2-2V5z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2v3.28a1 1 0 01-.72.94l-1.6 1.6a1 1 0 01-1.04-.25l-.25-.08A1.994 1.994 0 0111 15v6c0 1.1.9 2 2 2h2a2 2 0 002-2v-3.28a1 1 0 01.72-.94l1.6-1.6a1 1 0 011.04.25l.08.25A1.994 1.994 0 0121 19v-6c0-1.1-.9-2-2-2h-2a2 2 0 00-2 2v3.28z"></path></svg>
+            <!-- Nuova Icona Telefono Proporzionata -->
+            <svg class="icon-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.387a12.035 12.035 0 01-7.108-7.108c-.155-.44.01-1.21.387-1.213l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.75z"/>
+            </svg>
             <span id="chiamata-btn-testo">Dillo a Bibi</span>
         </button>
     </div>
 
-    <!-- Scheda 3: Proposta Attività Libera -->
+    <!-- Scheda 4: Proposta Attività Libera + DATA -->
     <div class="card">
         <span class="card-tag">Prossimo incontro</span>
         <h3>Propone un'attività</h3>
-        <p>Scrivi l'attività che sogni di fare insieme la prossima volta.</p>
+        <p>Pianifica un momento speciale scegliendo cosa fare e quando.</p>
         
-        <input type="text" id="attivita-libera" placeholder="Esempio: Picnic al tramonto, cinema, cena fuori...">
+        <div class="form-row">
+            <input type="text" id="attivita-libera" placeholder="Cosa facciamo?">
+            <input type="date" id="attivita-data">
+        </div>
         
         <button class="action-btn btn-submit" style="background-color: #202020;" onclick="proponiAttivita()">
             Proponi appuntamento
@@ -287,33 +314,31 @@
     </div>
 
     <script>
-        // Gestione dell'utente attivo (Default: Giacomo)
         let currentUser = 'Giacomo';
         
-        // Numeri di telefono dei due partner (Sostituiscili se vuoi automatizzare l'invio diretto)
-        const numeroBibi = "+393457199120"; 
-        const numeroGiacomo = "+391234567890"; // Inserisci il numero di Giacomo reale qui se serve
+        // Numeri di telefono corretti
+        const numeroBibi = "+393295994254"; 
+        const numeroGiacomo = "+393931503001";
 
         function setUser(user) {
             currentUser = user;
             
-            // Aggiorna la grafica dei pulsanti in alto
             document.getElementById('btn-giacomo').classList.toggle('active', user === 'Giacomo');
             document.getElementById('btn-bibi').classList.toggle('active', user === 'Bibi');
             
-            // Modifica i testi dinamicamente in base a chi sta guardando lo schermo
             if (user === 'Giacomo') {
                 document.getElementById('pensiero-titolo').innerText = "Ti ho pensata";
                 document.getElementById('pensiero-btn-testo').innerText = "Mandale un pensiero";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
+                document.getElementById('voglia-btn-testo').innerText = "Condividi con Bibi";
             } else {
                 document.getElementById('pensiero-titolo').innerText = "Ti ho pensato";
                 document.getElementById('pensiero-btn-testo').innerText = "Mandagli un pensiero";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
+                document.getElementById('voglia-btn-testo').innerText = "Condividi con Giacomo";
             }
         }
 
-        // 1. Funzione per il Pensiero dolce
         function inviaPensiero() {
             const testo = document.getElementById('pensiero-testo').value.trim();
             let messaggio = "";
@@ -324,13 +349,25 @@
                 messaggio = testo ? `Un pensiero da Bibi: "${testo}" ❤️` : "Ti sto pensando forte! ❤️";
             }
             
-            // Crea il link WhatsApp
             const targetNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
             window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
             document.getElementById('pensiero-testo').value = '';
         }
 
-        // 2. Funzione per la Richiesta di Chiamata personalizzata
+        function inviaVoglia() {
+            const testo = document.getElementById('voglia-testo').value.trim();
+            if (!testo) {
+                alert("Scrivi qualcosa di cui hai voglia!");
+                return;
+            }
+            const mittente = (currentUser === 'Giacomo') ? "Giacomo" : "Bibi";
+            const targetNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
+            const messaggio = `🤤 *Ho voglia di...* \n${mittente} ha voglia di: "${testo}" ✨`;
+            
+            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
+            document.getElementById('voglia-testo').value = '';
+        }
+
         function inviaRichiestaChiamata() {
             let messaggio = "";
             let targetNum = "";
@@ -346,21 +383,29 @@
             window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
         }
 
-        // 3. Funzione per la proposta di attività libera
         function proponiAttivita() {
             const attivita = document.getElementById('attivita-libera').value.trim();
+            const dataInput = document.getElementById('attivita-data').value;
+            
             if (!attivita) {
-                alert("Scrivi prima un'attività nel campo vuoto!");
+                alert("Scrivi prima l'attività!");
                 return;
+            }
+            
+            let dataFormattata = "";
+            if (dataInput) {
+                const dataObj = new Date(dataInput);
+                dataFormattata = " per il giorno " + dataObj.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
             }
             
             const mittente = (currentUser === 'Giacomo') ? "Giacomo" : "Bibi";
             const destinatarioNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
             
-            const messaggio = `✨ Proposta di appuntamento da ${mittente}: Che ne dici se facciamo "${attivita}"? 🥰`;
+            const messaggio = `✨ *Proposta Appuntamento* da ${mittente}:\nChe ne dici se facciamo "${attivita}"${dataFormattata}? 🥰`;
             
             window.open(`https://wa.me/${destinatarioNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
             document.getElementById('attivita-libera').value = '';
+            document.getElementById('attivita-data').value = '';
         }
     </script>
 </body>
