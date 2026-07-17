@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geko & Bibi</title>
+    <!-- Font eleganti: DM Serif Display per i titoli, Inter per il testo -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fcf6f5;
+            --primary-red: #ea2e64;
+            --primary-pink: #fbe6ec;
+            --text-dark: #202020;
+            --text-gray: #7d7d7d;
+            --card-bg: #ffffff;
+            
+            --title-font: 'DM Serif Display', serif;
+            --body-font: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--body-font);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 20px;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-circle {
+            width: 44px;
+            height: 44px;
+            background-color: #f7e0e4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-circle svg {
+            width: 22px;
+            height: 22px;
+            fill: #ea2e64;
+        }
+
+        .profile-text h1 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .profile-text p {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        /* --- Selettore Utente --- */
+        .user-selector {
+            display: flex;
+            background: #eee;
+            padding: 4px;
+            border-radius: 20px;
+            gap: 4px;
+        }
+
+        .user-btn {
+            border: none;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-gray);
+            transition: all 0.2s;
+        }
+
+        .user-btn.active {
+            background: var(--card-bg);
+            color: var(--primary-red);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* --- Sezione Titolo --- */
+        .title-section {
+            margin-bottom: 35px;
+        }
+
+        .title-section h2 {
+            font-family: var(--title-font);
+            font-size: 2.8rem;
+            line-height: 1.1;
+        }
+
+        .highlight {
+            color: var(--primary-red);
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 2px;
+            width: 100%;
+            height: 14px;
+            background-color: var(--primary-pink);
+            z-index: -1;
+            transform: scaleX(1.05);
+        }
+
+        /* --- Schede --- */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #f2f2f2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+        }
+
+        .card-tag {
+            color: var(--primary-red);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .card h3 {
+            font-family: var(--title-font);
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+
+        /* --- Input e Textarea --- */
+        textarea, input[type="text"] {
+            width: 100%;
+            border: 1px solid #eee;
+            background-color: #fafafa;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: var(--primary-red);
+            background-color: #fff;
+        }
+
+        textarea {
+            min-height: 90px;
+        }
+
+        /* --- Bottoni delle schede --- */
+        button.action-btn {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button.action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-submit {
+            background-color: var(--primary-red);
+            color: white;
+        }
+
+        .btn-message {
+            background-color: #e8e8e8;
+            color: #333333;
+        }
+
+        .icon-svg {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header superiore -->
+    <header>
+        <div class="header-left">
+            <div class="profile-circle">
+                <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path></svg>
+            </div>
+            <div class="profile-text">
+                <h1>Geko e Bibi</h1>
+                <p>Il nostro piccolo spazio</p>
+            </div>
+        </div>
+        
+        <!-- Selettore Utente Interattivo -->
+        <div class="user-selector">
+            <button id="btn-giacomo" class="user-btn active" onclick="setUser('Giacomo')">Giacomo</button>
+            <button id="btn-bibi" class="user-btn" onclick="setUser('Bibi')">Bibi</button>
+        </div>
+    </header>
+
+    <!-- Titolo di benvenuto con stile -->
+    <div class="title-section">
+        <h2>Un posto per dirci "<span class="highlight">sono qui</span>", anche da lontano.</h2>
+    </div>
+
+    <!-- Scheda 1: Ti ho pensata/o -->
+    <div class="card">
+        <span class="card-tag">I nostri momenti</span>
+        <h3 id="pensiero-titolo">Ti ho pensata</h3>
+        <p>Un piccolo segnale che arriva dritto al cuore.</p>
+        
+        <textarea id="pensiero-testo" placeholder="Aggiungi un pensiero, se vuoi..."></textarea>
+        
+        <button class="action-btn btn-submit" onclick="inviaPensiero()">
+            <svg class="icon-svg" fill="white" viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path></svg>
+            <span id="pensiero-btn-testo">Mandale un pensiero</span>
+        </button>
+    </div>
+
+    <!-- Scheda 2: Messaggio Bisogno di Chiamata (Dinamico) -->
+    <div class="card">
+        <span class="card-tag">Sintonia</span>
+        <h3>Ho voglia di sentirti</h3>
+        <p>Invia un piccolo promemoria per farti squillare il telefono.</p>
+        
+        <button class="action-btn btn-message" onclick="inviaRichiestaChiamata()">
+            <svg class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.72.598.598 0 00.5.41l1.6 1.6a1 1 0 01.25 1.04l-.08.25A1.994 1.994 0 0111 8H5c-1.1 0-2-.9-2-2V5z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2v3.28a1 1 0 01-.72.94l-1.6 1.6a1 1 0 01-1.04-.25l-.25-.08A1.994 1.994 0 0111 15v6c0 1.1.9 2 2 2h2a2 2 0 002-2v-3.28a1 1 0 01.72-.94l1.6-1.6a1 1 0 011.04.25l.08.25A1.994 1.994 0 0121 19v-6c0-1.1-.9-2-2-2h-2a2 2 0 00-2 2v3.28z"></path></svg>
+            <span id="chiamata-btn-testo">Dillo a Bibi</span>
+        </button>
+    </div>
+
+    <!-- Scheda 3: Proposta Attività Libera -->
+    <div class="card">
+        <span class="card-tag">Prossimo incontro</span>
+        <h3>Propone un'attività</h3>
+        <p>Scrivi l'attività che sogni di fare insieme la prossima volta.</p>
+        
+        <input type="text" id="attivita-libera" placeholder="Esempio: Picnic al tramonto, cinema, cena fuori...">
+        
+        <button class="action-btn btn-submit" style="background-color: #202020;" onclick="proponiAttivita()">
+            Proponi appuntamento
+        </button>
+    </div>
+
+    <script>
+        // Gestione dell'utente attivo (Default: Giacomo)
+        let currentUser = 'Giacomo';
+        
+        // Numeri di telefono dei due partner (Sostituiscili se vuoi automatizzare l'invio diretto)
+        const numeroBibi = "+393457199120"; 
+        const numeroGiacomo = "+391234567890"; // Inserisci il numero di Giacomo reale qui se serve
+
+        function setUser(user) {
+            currentUser = user;
+            
+            // Aggiorna la grafica dei pulsanti in alto
+            document.getElementById('btn-giacomo').classList.toggle('active', user === 'Giacomo');
+            document.getElementById('btn-bibi').classList.toggle('active', user === 'Bibi');
+            
+            // Modifica i testi dinamicamente in base a chi sta guardando lo schermo
+            if (user === 'Giacomo') {
+                document.getElementById('pensiero-titolo').innerText = "Ti ho pensata";
+                document.getElementById('pensiero-btn-testo').innerText = "Mandale un pensiero";
+                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
+            } else {
+                document.getElementById('pensiero-titolo').innerText = "Ti ho pensato";
+                document.getElementById('pensiero-btn-testo').innerText = "Mandagli un pensiero";
+                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
+            }
+        }
+
+        // 1. Funzione per il Pensiero dolce
+        function inviaPensiero() {
+            const testo = document.getElementById('pensiero-testo').value.trim();
+            let messaggio = "";
+            
+            if(currentUser === 'Giacomo') {
+                messaggio = testo ? `Un pensiero da Giacomo: "${testo}" ❤️` : "Ti sto pensando forte! ❤️";
+            } else {
+                messaggio = testo ? `Un pensiero da Bibi: "${testo}" ❤️` : "Ti sto pensando forte! ❤️";
+            }
+            
+            // Crea il link WhatsApp
+            const targetNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
+            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
+            document.getElementById('pensiero-testo').value = '';
+        }
+
+        // 2. Funzione per la Richiesta di Chiamata personalizzata
+        function inviaRichiestaChiamata() {
+            let messaggio = "";
+            let targetNum = "";
+            
+            if (currentUser === 'Giacomo') {
+                messaggio = "Il tuo bimbo avrebbe tanto bisogno di una chiamata 🥺";
+                targetNum = numeroBibi;
+            } else {
+                messaggio = "La tua bimba avrebbe tanto bisogno di una chiamata 🥺";
+                targetNum = numeroGiacomo;
+            }
+            
+            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
+        }
+
+        // 3. Funzione per la proposta di attività libera
+        function proponiAttivita() {
+            const attivita = document.getElementById('attivita-libera').value.trim();
+            if (!attivita) {
+                alert("Scrivi prima un'attività nel campo vuoto!");
+                return;
+            }
+            
+            const mittente = (currentUser === 'Giacomo') ? "Giacomo" : "Bibi";
+            const destinatarioNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
+            
+            const messaggio = `✨ Proposta di appuntamento da ${mittente}: Che ne dici se facciamo "${attivita}"? 🥰`;
+            
+            window.open(`https://wa.me/${destinatarioNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
+            document.getElementById('attivita-libera').value = '';
+        }
+    </script>
+</body>
+</html>
