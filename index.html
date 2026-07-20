@@ -46,11 +46,17 @@
         .card p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 16px; }
 
         textarea, input[type="text"], input[type="date"] { width: 100%; border: 1px solid #eee; background-color: #fafafa; border-radius: 14px; padding: 12px 14px; font-size: 0.9rem; margin-bottom: 16px; outline: none; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         
         button.action-btn { width: 100%; border: none; border-radius: 14px; padding: 14px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn-submit { background-color: var(--primary-red); color: white; }
+        .btn-photo { background-color: #0984e3; color: white; margin-top: 10px; }
         .btn-message { background-color: #e8e8e8; color: #333333; }
+        
+        .divider {
+            border: none;
+            border-top: 1px solid #f0f0f0;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -75,14 +81,25 @@
         <h2>Un posto per dirci "<span class="highlight">sono qui</span>", anche da lontano.</h2>
     </div>
 
-    <!-- Scheda 1: Pensiero -->
+    <!-- Scheda Unica: I nostri momenti (Pensiero + Foto insieme) -->
     <div class="card">
         <span class="card-tag">I nostri momenti</span>
         <h3 id="pensiero-titolo">Ti ho pensata</h3>
-        <p>Un piccolo segnale che arriva dritto al cuore.</p>
+        <p>Un piccolo segnale o una foto che arriva dritto al cuore.</p>
+        
+        <!-- Parte Pensiero -->
         <textarea id="pensiero-testo" placeholder="Aggiungi un pensiero, se vuoi..."></textarea>
         <button class="action-btn btn-submit" onclick="inviaPensiero()">
             <span id="pensiero-btn-testo">Mandale un pensiero</span>
+        </button>
+
+        <hr class="divider">
+
+        <!-- Parte Foto (Accanto/Subito sotto nella stessa scheda) -->
+        <h3 style="font-size: 1.2rem; margin-bottom: 6px;">Mandami una foto</h3>
+        <textarea id="foto-testo" placeholder="Scrivi una didascalia per la foto (opzionale)..." style="min-height: 70px;"></textarea>
+        <button class="action-btn btn-photo" onclick="inviaFoto()">
+            <span id="foto-btn-testo">Apri chat e manda foto a Bibi</span>
         </button>
     </div>
 
@@ -97,18 +114,7 @@
         </button>
     </div>
 
-    <!-- Scheda 3: Mandami una foto (Apre WhatsApp direttamente) -->
-    <div class="card">
-        <span class="card-tag">Attimi</span>
-        <h3 id="foto-titolo">Mandami una foto</h3>
-        <p>Apri la chat e condividi uno scatto al volo.</p>
-        <textarea id="foto-testo" placeholder="Scrivi una didascalia per la foto..."></textarea>
-        <button class="action-btn btn-submit" style="background-color: #0984e3;" onclick="inviaFoto()">
-            <span id="foto-btn-testo">Apri chat e manda foto a Bibi</span>
-        </button>
-    </div>
-
-    <!-- Scheda 4: Chiamata -->
+    <!-- Scheda 3: Chiamata -->
     <div class="card">
         <span class="card-tag">Sintonia</span>
         <h3>Ho voglia di sentirti</h3>
@@ -131,14 +137,14 @@
             if (user === 'Giacomo') {
                 document.getElementById('pensiero-titolo').innerText = "Ti ho pensata";
                 document.getElementById('pensiero-btn-testo').innerText = "Mandale un pensiero";
-                document.getElementById('voglia-btn-testo').innerText = "Condividi con Bibi";
                 document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto a Bibi";
+                document.getElementById('voglia-btn-testo').innerText = "Condividi con Bibi";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
             } else {
                 document.getElementById('pensiero-titolo').innerText = "Ti ho pensato";
                 document.getElementById('pensiero-btn-testo').innerText = "Mandagli un pensiero";
-                document.getElementById('voglia-btn-testo').innerText = "Condividi con Giacomo";
                 document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto a Giacomo";
+                document.getElementById('voglia-btn-testo').innerText = "Condividi con Giacomo";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
             }
         }
@@ -149,12 +155,6 @@
             window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function inviaVoglia() {
-            const t = document.getElementById('voglia-testo').value.trim();
-            const msg = `🍟 *Ho voglia di...* \n${currentUser} ha voglia di: "${t}" ✨`;
-            window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
         function inviaFoto() {
             const didascalia = document.getElementById('foto-testo').value.trim();
             const destinatario = currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo;
@@ -162,6 +162,12 @@
             
             window.open(`https://wa.me/${destinatario}?text=${encodeURIComponent(msg)}`, '_blank');
             document.getElementById('foto-testo').value = '';
+        }
+
+        function inviaVoglia() {
+            const t = document.getElementById('voglia-testo').value.trim();
+            const msg = `🍟 *Ho voglia di...* \n${currentUser} ha voglia di: "${t}" ✨`;
+            window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function inviaRichiestaChiamata() {
