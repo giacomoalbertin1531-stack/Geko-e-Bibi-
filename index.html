@@ -4,397 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geko & Bibi</title>
-    <!-- Font eleganti: DM Serif Display per i titoli, Inter per il testo -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #fcf6f5;
             --primary-red: #ea2e64;
-            --primary-pink: #fbe6ec;
             --text-dark: #202020;
             --text-gray: #7d7d7d;
             --card-bg: #ffffff;
-            
             --title-font: 'DM Serif Display', serif;
             --body-font: 'Inter', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--body-font);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--body-font); }
+        body { background-color: var(--bg-color); color: var(--text-dark); padding: 20px; padding-bottom: 60px; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            padding: 20px;
-            padding-bottom: 60px;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- Header --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        
         .profile-circle {
-            width: 44px;
-            height: 44px;
-            background-color: #f7e0e4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-circle svg {
-            width: 22px;
-            height: 22px;
-            fill: #ea2e64;
-        }
-
-        .profile-text h1 {
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-
-        .profile-text p {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-        }
-
-        /* --- Selettore Utente --- */
-        .user-selector {
-            display: flex;
-            background: #eee;
-            padding: 4px;
-            border-radius: 20px;
-            gap: 4px;
-        }
-
-        .user-btn {
-            border: none;
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            background: transparent;
-            color: var(--text-gray);
-            transition: all 0.2s;
-        }
-
-        .user-btn.active {
-            background: var(--card-bg);
-            color: var(--primary-red);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* --- Sezione Titolo (Sistemata la grafica strana) --- */
-        .title-section {
-            margin-bottom: 35px;
-        }
-
-        .title-section h2 {
-            font-family: var(--title-font);
-            font-size: 2.8rem;
-            line-height: 1.2;
-        }
-
-        .highlight {
-            color: var(--primary-red);
-            font-style: italic;
-            font-weight: normal;
-        }
-
-        /* --- Schede --- */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 24px;
-            padding: 22px;
-            margin-bottom: 20px;
-            border: 1px solid #f2f2f2;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
-        }
-
-        .card-tag {
-            color: var(--primary-red);
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .card h3 {
-            font-family: var(--title-font);
-            font-size: 1.5rem;
-            margin-bottom: 6px;
-        }
-
-        .card p {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            margin-bottom: 16px;
-        }
-
-        /* --- Input, Data e Textarea --- */
-        textarea, input[type="text"], input[type="date"] {
-            width: 100%;
-            border: 1px solid #eee;
-            background-color: #fafafa;
-            border-radius: 14px;
-            padding: 12px 14px;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            resize: none;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        textarea:focus, input[type="text"]:focus, input[type="date"]:focus {
-            border-color: var(--primary-red);
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; border: 2px solid #f7e0e4;
             background-color: #fff;
         }
+        .profile-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        textarea {
-            min-height: 90px;
-        }
+        .profile-text h1 { font-size: 1.05rem; font-weight: 600; }
+        .profile-text p { font-size: 0.8rem; color: var(--text-gray); }
 
-        /* Grid per attività e data affiancati */
-        .form-row {
+        .user-selector { display: flex; background: #eee; padding: 4px; border-radius: 20px; gap: 4px; }
+        .user-btn { border: none; padding: 6px 14px; border-radius: 16px; font-size: 0.8rem; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-gray); transition: all 0.2s; }
+        .user-btn.active { background: var(--card-bg); color: var(--primary-red); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+        .title-section { margin-bottom: 35px; }
+        .title-section h2 { font-family: var(--title-font); font-size: 2.8rem; line-height: 1.2; }
+        .highlight { color: var(--primary-red); font-style: italic; }
+
+        .card { background-color: var(--card-bg); border-radius: 24px; padding: 22px; margin-bottom: 20px; border: 1px solid #f2f2f2; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
+        .card-tag { color: var(--primary-red); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block; }
+        .card h3 { font-family: var(--title-font); font-size: 1.5rem; margin-bottom: 6px; }
+        .card p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 16px; }
+
+        textarea, input[type="text"] { width: 100%; border: 1px solid #eee; background-color: #ffffff; border-radius: 12px; padding: 10px 12px; font-size: 0.85rem; margin-bottom: 12px; outline: none; resize: none; min-height: 75px; }
+        
+        /* Griglia interna divisa a metà */
+        .side-by-side {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-        /* --- Bottoni delle schede --- */
-        button.action-btn {
-            width: 100%;
-            border: none;
-            border-radius: 14px;
+        /* I due sotto-riquadri grigi interni */
+        .action-box {
+            background-color: #f7f5f4;
+            border: 1px solid #f0eae8;
+            border-radius: 18px;
             padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .action-box h4 {
             font-size: 0.95rem;
             font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s, transform 0.1s;
+            margin-bottom: 8px;
+            color: var(--text-dark);
         }
 
-        button.action-btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-submit {
-            background-color: var(--primary-red);
-            color: white;
-        }
-
-        .btn-message {
-            background-color: #e8e8e8;
-            color: #333333;
-        }
-
-        .icon-svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
+        button.action-btn { width: 100%; border: none; border-radius: 12px; padding: 12px 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center; }
+        .btn-submit { background-color: var(--primary-red); color: white; }
+        .btn-photo { background-color: #0984e3; color: white; }
+        .btn-message { background-color: #e8e8e8; color: #333333; }
     </style>
 </head>
 <body>
 
-    <!-- Header superiore -->
     <header>
         <div class="header-left">
             <div class="profile-circle">
-                <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path></svg>
+                <!-- Immagine locale presa direttamente dalla cartella del repository -->
+                <img src="828332f3-4c94-4c98-bc2d-cec414bd70f2.png" alt="Orsetti">
             </div>
             <div class="profile-text">
                 <h1>Geko e Bibi</h1>
                 <p>Il nostro piccolo spazio</p>
             </div>
         </div>
-        
-        <!-- Selettore Utente Interattivo -->
         <div class="user-selector">
             <button id="btn-giacomo" class="user-btn active" onclick="setUser('Giacomo')">Giacomo</button>
             <button id="btn-bibi" class="user-btn" onclick="setUser('Bibi')">Bibi</button>
         </div>
     </header>
 
-    <!-- Titolo di benvenuto (Sistemato) -->
     <div class="title-section">
         <h2>Un posto per dirci "<span class="highlight">sono qui</span>", anche da lontano.</h2>
     </div>
 
-    <!-- Scheda 1: Ti ho pensata/o (Cuori Arancione/Bianco) -->
+    <!-- Scheda principale "Ti ho pensata" con dentro le due opzioni affiancate -->
     <div class="card">
         <span class="card-tag">I nostri momenti</span>
-        <h3 id="pensiero-titolo">Ti ho pensata</h3>
-        <p>Un piccolo segnale che arriva dritto al cuore.</p>
+        <h3 id="main-title">Ti ho pensata</h3>
+        <p>Un piccolo segnale o una foto che arriva dritto al cuore.</p>
         
-        <textarea id="pensiero-testo" placeholder="Aggiungi un pensiero, se vuoi..."></textarea>
-        
-        <button class="action-btn btn-submit" onclick="inviaPensiero()">
-            <svg class="icon-svg" fill="white" viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path></svg>
-            <span id="pensiero-btn-testo">Mandale un pensiero</span>
-        </button>
+        <div class="side-by-side">
+            <!-- Sotto-riquadro Sinistra: Pensiero -->
+            <div class="action-box">
+                <h4 id="box-pensiero-title">Mandale un pensiero</h4>
+                <textarea id="pensiero-testo" placeholder="Aggiungi un pensiero..."></textarea>
+                <button class="action-btn btn-submit" onclick="inviaPensiero()">
+                    <span id="pensiero-btn-testo">Invia pensiero</span>
+                </button>
+            </div>
+
+            <!-- Sotto-riquadro Destra: Foto -->
+            <div class="action-box">
+                <h4 id="box-foto-title">Mandale una foto</h4>
+                <textarea id="foto-testo" placeholder="Didascalia foto..."></textarea>
+                <button class="action-btn btn-photo" onclick="inviaFoto()">
+                    <span id="foto-btn-testo">Apri chat e manda foto</span>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Scheda 2: Ho voglia di... (Icona Patatine) -->
+    <!-- Scheda 2: Voglia di... -->
     <div class="card">
         <span class="card-tag">Desideri</span>
         <h3 id="voglia-titolo">Ho voglia di...</h3>
-        <p>Condividi una tua voglia improvvisa, una coccola o un vizio.</p>
-        
-        <input type="text" id="voglia-testo" placeholder="Esempio: un abbraccio forte, sushi, un massaggio...">
-        
-        <button class="action-btn btn-submit" style="background-color: #6c5ce7;" onclick="inviaVoglia()">
+        <p>Condividi una tua voglia improvvisa.</p>
+        <input type="text" id="voglia-testo" placeholder="Esempio: patatine fritte 🍟">
+        <button class="action-btn btn-submit" style="background-color: #6c5ce7; padding: 14px;" onclick="inviaVoglia()">
             <span id="voglia-btn-testo">Condividi con Bibi</span>
         </button>
     </div>
 
-    <!-- Scheda 3: Messaggio Bisogno di Chiamata -->
+    <!-- Scheda 3: Chiamata -->
     <div class="card">
         <span class="card-tag">Sintonia</span>
         <h3>Ho voglia di sentirti</h3>
         <p>Invia un piccolo promemoria per farti squillare il telefono.</p>
-        
-        <button class="action-btn btn-message" onclick="inviaRichiestaChiamata()">
-            <svg class="icon-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.387a12.035 12.035 0 01-7.108-7.108c-.155-.44.01-1.21.387-1.213l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.75z"/>
-            </svg>
+        <button class="action-btn btn-message" style="padding: 14px;" onclick="inviaRichiestaChiamata()">
             <span id="chiamata-btn-testo">Dillo a Bibi</span>
-        </button>
-    </div>
-
-    <!-- Scheda 4: Proposta Attività Libera + DATA -->
-    <div class="card">
-        <span class="card-tag">Prossimo incontro</span>
-        <h3>Propone un'attività</h3>
-        <p>Pianifica un momento speciale scegliendo cosa fare e quando.</p>
-        
-        <div class="form-row">
-            <input type="text" id="attivita-libera" placeholder="Cosa facciamo?">
-            <input type="date" id="attivita-data">
-        </div>
-        
-        <button class="action-btn btn-submit" style="background-color: #202020;" onclick="proponiAttivita()">
-            Proponi appuntamento
         </button>
     </div>
 
     <script>
         let currentUser = 'Giacomo';
-        
-        // I vostri numeri reali impostati
         const numeroBibi = "+393295994254"; 
         const numeroGiacomo = "+393931503001";
 
         function setUser(user) {
             currentUser = user;
-            
             document.getElementById('btn-giacomo').classList.toggle('active', user === 'Giacomo');
             document.getElementById('btn-bibi').classList.toggle('active', user === 'Bibi');
             
             if (user === 'Giacomo') {
-                document.getElementById('pensiero-titolo').innerText = "Ti ho pensata";
-                document.getElementById('pensiero-btn-testo').innerText = "Mandale un pensiero";
-                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
+                document.getElementById('main-title').innerText = "Ti ho pensata";
+                document.getElementById('box-pensiero-title').innerText = "Mandale un pensiero";
+                document.getElementById('box-foto-title').innerText = "Mandale una foto";
+                document.getElementById('pensiero-btn-testo').innerText = "Invia pensiero";
+                document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto";
                 document.getElementById('voglia-btn-testo').innerText = "Condividi con Bibi";
+                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
             } else {
-                document.getElementById('pensiero-titolo').innerText = "Ti ho pensato";
-                document.getElementById('pensiero-btn-testo').innerText = "Mandagli un pensiero";
-                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
+                document.getElementById('main-title').innerText = "Ti ho pensato";
+                document.getElementById('box-pensiero-title').innerText = "Mandagli un pensiero";
+                document.getElementById('box-foto-title').innerText = "Mandagli una foto";
+                document.getElementById('pensiero-btn-testo').innerText = "Invia pensiero";
+                document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto";
                 document.getElementById('voglia-btn-testo').innerText = "Condividi con Giacomo";
+                document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
             }
         }
 
         function inviaPensiero() {
             const testo = document.getElementById('pensiero-testo').value.trim();
-            let messaggio = "";
+            const msg = currentUser === 'Giacomo' ? (testo ? `Giacomo dice: "${testo}" 🧡` : "Ti sto pensando forte! 🧡") : (testo ? `Bibi dice: "${testo}" 🤍` : "Ti sto pensando forte! 🤍");
+            window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function inviaFoto() {
+            const didascalia = document.getElementById('foto-testo').value.trim();
+            const destinatario = currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo;
+            const msg = didascalia ? `📸 *Foto da ${currentUser}:* "${didascalia}" ✨` : `📸 *Ti mando una foto!* - ${currentUser} ✨`;
             
-            // Giacomo manda cuore arancione, Bibi manda cuore bianco
-            if(currentUser === 'Giacomo') {
-                messaggio = testo ? `Un pensiero da Giacomo: "${testo}" 🧡` : "Ti sto pensando forte! 🧡";
-            } else {
-                messaggio = testo ? `Un pensiero da Bibi: "${testo}" 🤍` : "Ti sto pensando forte! 🤍";
-            }
-            
-            const targetNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
-            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
-            document.getElementById('pensiero-testo').value = '';
+            window.open(`https://wa.me/${destinatario}?text=${encodeURIComponent(msg)}`, '_blank');
+            document.getElementById('foto-testo').value = '';
         }
 
         function inviaVoglia() {
-            const testo = document.getElementById('voglia-testo').value.trim();
-            if (!testo) {
-                alert("Scrivi qualcosa di cui hai voglia!");
-                return;
-            }
-            const mittente = (currentUser === 'Giacomo') ? "Giacomo" : "Bibi";
-            const targetNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
-            // Sostituita la faccina con le patatine fritte 
-            const messaggio = `🍟 *Ho voglia di...* \n${mittente} ha voglia di: "${testo}" ✨`;
-            
-            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
-            document.getElementById('voglia-testo').value = '';
+            const t = document.getElementById('voglia-testo').value.trim();
+            const msg = `🍟 *Ho voglia di...* \n${currentUser} ha voglia di: "${t}" ✨`;
+            window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function inviaRichiestaChiamata() {
-            let messaggio = "";
-            let targetNum = "";
-            
-            if (currentUser === 'Giacomo') {
-                messaggio = "Il tuo bimbo avrebbe tanto bisogno di una chiamata 🥺";
-                targetNum = numeroBibi;
-            } else {
-                messaggio = "La tua bimba avrebbe tanto bisogno di una chiamata 🥺";
-                targetNum = numeroGiacomo;
-            }
-            
-            window.open(`https://wa.me/${targetNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
-        }
-
-        function proponiAttivita() {
-            const attivita = document.getElementById('attivita-libera').value.trim();
-            const dataInput = document.getElementById('attivita-data').value;
-            
-            if (!attivita) {
-                alert("Scrivi prima l'attività!");
-                return;
-            }
-            
-            let dataFormattata = "";
-            if (dataInput) {
-                const dataObj = new Date(dataInput);
-                dataFormattata = " per il giorno " + dataObj.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
-            }
-            
-            const mittente = (currentUser === 'Giacomo') ? "Giacomo" : "Bibi";
-            const destinatarioNum = (currentUser === 'Giacomo') ? numeroBibi : numeroGiacomo;
-            
-            const messaggio = `✨ *Proposta Appuntamento* da ${mittente}:\nChe ne dici se facciamo "${attivita}"${dataFormattata}? 🥰`;
-            
-            window.open(`https://wa.me/${destinatarioNum}?text=${encodeURIComponent(messaggio)}`, '_blank');
-            document.getElementById('attivita-libera').value = '';
-            document.getElementById('attivita-data').value = '';
+            const msg = currentUser === 'Giacomo' ? "Il tuo bimbo avrebbe tanto bisogno di una chiamata 🥺" : "La tua bimba avrebbe tanto bisogno di una chiamata 🥺";
+            window.open(`https://wa.me/${currentUser === 'Giacomo' ? numeroBibi : numeroGiacomo}?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
 </body>
