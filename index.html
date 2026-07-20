@@ -45,28 +45,33 @@
         .card h3 { font-family: var(--title-font); font-size: 1.5rem; margin-bottom: 6px; }
         .card p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 16px; }
 
-        textarea, input[type="text"] { width: 100%; border: 1px solid #eee; background-color: #fafafa; border-radius: 14px; padding: 12px 14px; font-size: 0.9rem; margin-bottom: 12px; outline: none; resize: none; min-height: 80px; }
+        textarea, input[type="text"] { width: 100%; border: 1px solid #eee; background-color: #fafafa; border-radius: 14px; padding: 12px 14px; font-size: 0.9rem; margin-bottom: 12px; outline: none; resize: none; min-height: 90px; }
         
-        /* Griglia affiancata per il blocco Pensiero / Foto */
+        /* Griglia a metà esatta (50% e 50%) */
         .side-by-side {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
         }
 
-        @media (max-width: 600px) {
-            .side-by-side {
-                grid-template-columns: 1fr; /* Sui telefoni stretti se vuoi tornano in colonna, ma lasciamo 1fr 1fr se preferisci sempre affiancati */
-            }
-        }
-
-        .action-column {
+        .action-box {
+            background-color: #faf8f7;
+            border: 1px solid #f0eae8;
+            border-radius: 18px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        button.action-btn { width: 100%; border: none; border-radius: 14px; padding: 12px 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center; }
+        .action-box h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        button.action-btn { width: 100%; border: none; border-radius: 12px; padding: 12px 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center; }
         .btn-submit { background-color: var(--primary-red); color: white; }
         .btn-photo { background-color: #0984e3; color: white; }
         .btn-message { background-color: #e8e8e8; color: #333333; }
@@ -94,26 +99,28 @@
         <h2>Un posto per dirci "<span class="highlight">sono qui</span>", anche da lontano.</h2>
     </div>
 
-    <!-- Scheda Unica con Pensiero e Foto AFFIANCATI -->
+    <!-- Scheda principale divisa esattamente a metà -->
     <div class="card">
         <span class="card-tag">I nostri momenti</span>
-        <h3 id="pensiero-titolo">Ti ho pensata</h3>
+        <h3 id="main-title">Ti ho pensata</h3>
         <p>Un piccolo segnale o una foto che arriva dritto al cuore.</p>
         
         <div class="side-by-side">
-            <!-- Colonna Sinistra: Pensiero -->
-            <div class="action-column">
+            <!-- Metà Sinistra: Mandale un pensiero -->
+            <div class="action-box">
+                <h4 id="box-pensiero-title">Mandale un pensiero</h4>
                 <textarea id="pensiero-testo" placeholder="Aggiungi un pensiero..."></textarea>
                 <button class="action-btn btn-submit" onclick="inviaPensiero()">
-                    <span id="pensiero-btn-testo">Mandale un pensiero</span>
+                    <span id="pensiero-btn-testo">Invia pensiero</span>
                 </button>
             </div>
 
-            <!-- Colonna Destra: Foto -->
-            <div class="action-column">
+            <!-- Metà Destra: Mandale una foto -->
+            <div class="action-box">
+                <h4 id="box-foto-title">Mandale una foto</h4>
                 <textarea id="foto-testo" placeholder="Didascalia foto..."></textarea>
                 <button class="action-btn btn-photo" onclick="inviaFoto()">
-                    <span id="foto-btn-testo">Manda una foto</span>
+                    <span id="foto-btn-testo">Apri chat e manda foto</span>
                 </button>
             </div>
         </div>
@@ -151,15 +158,19 @@
             document.getElementById('btn-bibi').classList.toggle('active', user === 'Bibi');
             
             if (user === 'Giacomo') {
-                document.getElementById('pensiero-titolo').innerText = "Ti ho pensata";
-                document.getElementById('pensiero-btn-testo').innerText = "Mandale un pensiero";
-                document.getElementById('foto-btn-testo').innerText = "Manda una foto";
+                document.getElementById('main-title').innerText = "Ti ho pensata";
+                document.getElementById('box-pensiero-title').innerText = "Mandale un pensiero";
+                document.getElementById('box-foto-title').innerText = "Mandale una foto";
+                document.getElementById('pensiero-btn-testo').innerText = "Invia pensiero";
+                document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto";
                 document.getElementById('voglia-btn-testo').innerText = "Condividi con Bibi";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Bibi";
             } else {
-                document.getElementById('pensiero-titolo').innerText = "Ti ho pensato";
-                document.getElementById('pensiero-btn-testo').innerText = "Mandagli un pensiero";
-                document.getElementById('foto-btn-testo').innerText = "Manda una foto";
+                document.getElementById('main-title').innerText = "Ti ho pensato";
+                document.getElementById('box-pensiero-title').innerText = "Mandagli un pensiero";
+                document.getElementById('box-foto-title').innerText = "Mandagli una foto";
+                document.getElementById('pensiero-btn-testo').innerText = "Invia pensiero";
+                document.getElementById('foto-btn-testo').innerText = "Apri chat e manda foto";
                 document.getElementById('voglia-btn-testo').innerText = "Condividi con Giacomo";
                 document.getElementById('chiamata-btn-testo').innerText = "Dillo a Giacomo";
             }
